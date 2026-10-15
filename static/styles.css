@@ -1,0 +1,27 @@
+:root { font-family: system-ui, sans-serif; color: #21313a; background: #f4f6f8; line-height: 1.5; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1160px; margin: auto; padding: 28px 22px; }
+h1 { font-size: 2.1rem; line-height: 1.2; color: #153e57; }
+h2 { font-size: 1.35rem; }
+.institucion, footer { color: #4a5f6d; }
+section { background: white; padding: 24px; margin: 24px 0; border: 1px solid #d6e0e5; border-radius: 8px; }
+label { display: block; font-weight: 600; margin-top: 12px; }
+input, textarea, select { font: inherit; padding: 10px; border: 1px solid #879aa6; border-radius: 4px; width: 100%; }
+textarea { resize: vertical; }
+button { font: inherit; color: white; background: #165575; border: 0; border-radius: 4px; padding: 10px 16px; cursor: pointer; margin: 14px 0 0; }
+button:hover { background: #103e56; }
+a { color: #164f71; }
+.aviso { padding: 12px 0; }
+.error { color: #9b1824; }
+.mensaje { padding: 12px; background: #e1f2e8; }
+.filtro { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.filtro select { width: auto; min-width: 160px; }
+.filtro label, .filtro button { margin: 0; }
+.tabla { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+th, td { text-align: left; border: 1px solid #d6e0e5; padding: 10px; vertical-align: top; }
+th { background: #e9f0f5; }
+td button { margin: 0; }
+.descripcion { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 360px; }
+:focus-visible { outline: 3px solid #b46812; outline-offset: 3px; }

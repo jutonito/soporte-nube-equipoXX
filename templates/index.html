@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soporte del laboratorio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<main>
+  <header>
+    <p class="institucion">Computación en la Nube · Ingeniería de Sistemas</p>
+    <h1>Soporte del laboratorio</h1>
+    <p>Profesor Jhon F Linares A</p>
+  </header>
+  <p class="aviso">Práctica académica con datos ficticios. Este sistema no tiene autenticación:
+    cualquier visitante puede consultar y resolver solicitudes. Recargue para ver cambios de otros usuarios.</p>
+  {% for categoria, mensaje in get_flashed_messages(with_categories=true) %}
+  <p class="mensaje {{ categoria }}" role="status">{{ mensaje }}</p>
+  {% endfor %}
+
+  <section aria-labelledby="nuevo">
+    <h2 id="nuevo">Registrar solicitud</h2>
+    <form action="{{ url_for('crear_solicitud') }}" method="post">
+      {{ form.hidden_tag() }}
+      <label for="solicitante">Solicitante ficticio</label>
+      {{ form.solicitante(required=true, maxlength=120, placeholder='Estudiante A') }}
+      {% for error in form.solicitante.errors %}<p class="error" role="alert">{{ error }}</p>{% endfor %}
+      <label for="equipo">Equipo</label>
+      {{ form.equipo(required=true, maxlength=40, placeholder='LAB-02') }}
+      {% for error in form.equipo.errors %}<p class="error" role="alert">{{ error }}</p>{% endfor %}
+      <label for="descripcion">Descripción</label>
+      {{ form.descripcion(required=true, maxlength=2000, rows=3, placeholder='El teclado no responde') }}
+      {% for error in form.descripcion.errors %}<p class="error" role="alert">{{ error }}</p>{% endfor %}
+      <button type="submit">Registrar solicitud</button>
+    </form>
+  </section>
+
+  <section aria-labelledby="listado">
+    <h2 id="listado">Solicitudes registradas</h2>
+    <form action="{{ url_for('index') }}" method="get" class="filtro">
+      <label for="estado">Estado</label>
+      <select name="estado" id="estado">
+        <option value="" {% if not estado %}selected{% endif %}>Todos</option>
+        <option value="Pendiente" {% if estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+        <option value="Resuelta" {% if estado == 'Resuelta' %}selected{% endif %}>Resuelta</option>
+      </select>
+      <button type="submit">Filtrar</button>
+      <a href="{{ url_for('index') }}">Quitar filtro</a>
+    </form>
+    <p>Registros en esta vista: {{ solicitudes|length }}</p>
+    <div class="tabla">
+      <table>
+        <thead><tr><th>ID</th><th>Solicitante</th><th>Equipo</th><th>Descripción</th><th>Estado</th><th>Acción</th></tr></thead>
+        <tbody>
+        {% for solicitud in solicitudes %}
+          <tr data-id="{{ solicitud.id }}">
+            <td>{{ solicitud.id }}</td><td>{{ solicitud.solicitante }}</td>
+            <td>{{ solicitud.equipo }}</td><td class="descripcion">{{ solicitud.descripcion }}</td>
+            <td>{{ solicitud.estado }}</td>
+            <td>{% if solicitud.estado == 'Pendiente' %}
+              <form method="post" action="{{ url_for('resolver', solicitud_id=solicitud.id) }}">
+                {{ resolver_form.hidden_tag() }}
+                <button type="submit" aria-label="Resolver solicitud {{ solicitud.id }}">Resolver</button>
+              </form>
+              {% else %}Atendida{% endif %}
+            </td>
+          </tr>
+        {% else %}<tr><td colspan="6">No hay solicitudes para mostrar.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <footer>Demostración Flask y PostgreSQL · <a href="{{ url_for('health') }}">Comprobar conexión</a></footer>
+</main>
+</body>
+</html>
