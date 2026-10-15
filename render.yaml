@@ -1,0 +1,25 @@
+# Blueprint de Render: crea la base PostgreSQL y el Web Service del taller con la misma configuración.
+databases:
+  - name: soporte-db-equipoXX
+    databaseName: soporte
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: soporte-web-equipoXX
+    runtime: python
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: flask --app app init-db && gunicorn app:app -b 0.0.0.0:$PORT -w 1
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: soporte-db-equipoXX
+          property: connectionString   # URL INTERNA; app.py exige sslmode=require
+      - key: SECRET_KEY
+        generateValue: true
